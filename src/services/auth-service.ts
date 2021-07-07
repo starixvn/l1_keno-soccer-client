@@ -44,7 +44,14 @@ export const verifySession = async () => {
 
 export const clearSession = () => removeLocalStorageItem(localStorageKeys.session);
 
-export const reCheckIn = async () => {
-    const userSession = getLocalStorageItem<SSOResponse>(localStorageKeys.session);
+export const reCheckIn = async (userSession: SSOResponse) => {
     return authService.reCheckIn(userSession?.ss, userSession?.username);
+};
+
+export const createNickname = async (userSession: SSOResponse, nickname: string, avatarId: number) => {
+    return authService.signName(userSession.ss, userSession.username, nickname, avatarId);
+};
+
+export const authorize = async (userSession: SSOResponse) => {
+    return authService.authorize(userSession.ss, userSession.username);
 };
