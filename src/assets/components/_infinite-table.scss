@@ -1,0 +1,118 @@
+[data-theme="light"] .react-infinite-table {
+    --table-background: #fff;
+    --table-border: #dce2f3;
+    --table-color: #2c2f3e;
+    --table-header-background: #ffd487;
+    --table-header-color: #2c2f3e;
+    --table-row-highlight-background: #fff5e3;
+}
+
+[data-theme="dark"] .react-infinite-table {
+    --table-background: none;
+    --table-border: #4b5a6c;
+    --table-color: #fff;
+    --table-header-background: #ffd487;
+    --table-header-color: #2c2f3e;
+    --table-row-highlight-background: #2a415a;
+}
+
+.react-infinite-table {
+    .react-infinite-table-wrapper {
+        margin-bottom: 6px;
+        max-height: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        position: relative;
+        z-index: var(--popup-index);
+        -webkit-overflow-scrolling: touch;
+        overflow: auto;
+
+        .table {
+            td {
+                box-sizing: border-box;
+                min-height: 3.6rem;
+                vertical-align: middle;
+                border: none;
+                font-size: 1.3rem;
+            }
+
+            thead {
+                box-shadow: 0px 10px 10px rgba(95, 90, 247, 0.03);
+                box-sizing: border-box;
+
+                td {
+                    position: sticky;
+                    position: -webkit-sticky;
+                    position: -moz-sticky;
+                    position: -o-sticky;
+                    top: 0;
+                    z-index: 2;
+                    height: 3.6rem;
+                    padding: 0;
+                    background: var(--table-header-background);
+                    color: var(--table-header-color);
+                    border-bottom: none;
+                    font-weight: 500;
+                    white-space: nowrap;
+
+                    &:first-child {
+                        border-radius: 0.5rem 0 0 0.5rem;
+                    }
+
+                    &:last-child {
+                        border-radius: 0 0.5rem 0.5rem 0;
+                    }
+                }
+            }
+
+            tbody {
+                background-color: var(--table-background);
+                color: var(--table-color);
+
+                tr {
+                    border-bottom: 1px solid var(--table-border);
+
+                    &:last-child {
+                        border-bottom: none !important;
+                    }
+
+                    &:nth-child(3) {
+                        display: none;
+                    }
+
+                    &.react-infinite-table-spacer {
+                        background-color: transparent !important;
+                    }
+                }
+
+                td {
+                    padding: 0.2rem;
+                    &.highlight {
+                        background-color: var(--table-row-highlight-background);
+                    }
+                }
+            }
+        }
+    }
+
+    .react-infinite-table-scroll-smoother {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 5;
+        pointer-events: none;
+    }
+
+    .date {
+        color: #9298a4;
+        font-size: 1.2rem;
+    }
+}
+
+.table-container {
+    height: 100%;
+    padding: 0.6rem;
+    padding-top: 0;
+}

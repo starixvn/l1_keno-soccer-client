@@ -1,0 +1,19 @@
+.tooltip-inner {
+    color: var(--text-color);
+}
+
+.tooltip-number,
+.tooltip-round {
+    font-size: 1.1rem;
+    font-family: var(--font-number);
+}
+
+.tooltip-title {
+    font-size: 1.1rem;
+    margin-right: 0.3rem;
+}
+
+.tooltip-result {
+    font-weight: bold;
+    margin-right: 0.4rem;
+}

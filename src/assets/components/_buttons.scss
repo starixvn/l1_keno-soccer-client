@@ -1,0 +1,71 @@
+%btn {
+    position: relative;
+    height: 4rem;
+    line-height: 4rem;
+    padding: 0 2rem;
+    border-radius: 0.5rem;
+    border: none;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
+    background-position: center;
+    transition: background 0.8s;
+    text-align: center;
+    font-size: 1.6rem;
+
+    &:disabled {
+        opacity: 0.6;
+    }
+
+    &:hover:enabled {
+        cursor: pointer;
+    }
+
+    &:active {
+        background-size: 100%;
+        transition: background 0s;
+    }
+}
+
+.btn-green {
+    @extend %btn;
+    background-color: var(--btn-green-background);
+    color: var(--btn-green-color);
+
+    &:hover:enabled {
+        background: var(--btn-green-background-hover) radial-gradient(circle, transparent 1%, var(--btn-green-background-hover) 1%)
+            center/15000%;
+    }
+
+    &:active {
+        background-color: var(--btn-green-background-hover);
+    }
+}
+
+.btn-orange {
+    @extend %btn;
+    background-color: var(--btn-orange-background);
+    color: var(--btn-orange-color);
+
+    &:hover:enabled {
+        background: var(--btn-orange-background-hover) radial-gradient(circle, transparent 1%, var(--btn-orange-background-hover) 1%)
+            center/15000%;
+    }
+
+    &:active {
+        background-color: var(--btn-orange-background-hover);
+    }
+}
+
+.btn-grey {
+    @extend %btn;
+    background-color: var(--btn-grey-background);
+    color: var(--btn-grey-color);
+
+    &:hover:enabled {
+        background: var(--btn-grey-background-hover) radial-gradient(circle, transparent 1%, var(--btn-grey-background-hover) 1%)
+            center/15000%;
+    }
+
+    &:active {
+        background-color: var(--btn-grey-background-hover);
+    }
+}

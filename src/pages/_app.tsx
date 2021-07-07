@@ -1,3 +1,6 @@
+import "../assets/errors.scss";
+import "../assets/main.scss";
+
 import { appWithTranslation } from "next-i18next";
 import App, { AppProps } from "next/app";
 import React from "react";

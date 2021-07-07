@@ -1,0 +1,32 @@
+.move-up-no-animation {
+    transform: scale(1) translateY(var(--move-up-distance)) !important;
+}
+
+.move-up-animation {
+    transform: scale(var(--result-scale));
+    animation: move-up-result-animation 0.4s linear forwards;
+}
+
+@keyframes move-up-result-animation {
+    from {
+        transform: scale(var(--result-scale)) translateY(0);
+    }
+
+    to {
+        transform: scale(var(--result-scale)) translateY(var(--move-up-distance));
+    }
+}
+
+.hide-result-animation {
+    animation: hide-result-animation 0.5s linear forwards !important;
+}
+
+@keyframes hide-result-animation {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
