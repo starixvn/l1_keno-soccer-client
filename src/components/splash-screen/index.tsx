@@ -1,25 +1,28 @@
-import lottie from "lottie-web";
-import { useEffect, useRef } from "react";
-import { isMobileOnly } from "react-device-detect";
+import React from "react";
 
-import * as animationData from "./animation-data";
 import Styles from "./splash-screen.module.scss";
 
 export default function SplashScreen({ locale }) {
-    const wrapperRefLogo = useRef<HTMLDivElement>(null);
-    const device = isMobileOnly ? "mobile" : "desktop";
-
-    useEffect(() => {
-        if (wrapperRefLogo.current) {
-            lottie.loadAnimation({
-                container: wrapperRefLogo.current,
-                renderer: "svg",
-                loop: true,
-                autoplay: true,
-                animationData: animationData[locale][device],
-            });
-        }
-    }, [wrapperRefLogo]);
-
-    return <div className={Styles.page} ref={wrapperRefLogo}></div>;
+    return (
+        <div className={`${Styles.page}`}>
+            <div className={Styles["logo"]}>
+                <img
+                    src={`/static/images/splash-screen/${locale}/logo.svg`}
+                    className={Styles["img-fluid"]}
+                    width="auto"
+                    height="auto"
+                    alt="Logo"
+                />
+            </div>
+            <div className={Styles["info"]}>
+                <img
+                    src={`/static/images/splash-screen/${locale}/info.svg`}
+                    className={Styles["img-fluid"]}
+                    width="auto"
+                    height="auto"
+                    alt="Info"
+                />
+            </div>
+        </div>
+    );
 }

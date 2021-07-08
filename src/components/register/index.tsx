@@ -2,9 +2,9 @@ import { Trans, useTranslation } from "next-i18next";
 import React, { useState } from "react";
 import { AuthorizeResponse, Response, SSOResponse } from "sc-user-service-client/dist/auth";
 
-import { GetLocalizedErrorMessage } from "../../../helpers/notice-helper";
-import { randomInteger } from "../../../helpers/number-helper";
-import { createNickname } from "../../../services/auth-service";
+import { GetLocalizedErrorMessage } from "../../helpers/notice-helper";
+import { randomInteger } from "../../helpers/number-helper";
+import { createNickname } from "../../services/auth-service";
 import NameGenerator from "./name-generator";
 import ProfilePicture from "./profile-picture";
 import Styles from "./register.module.scss";
