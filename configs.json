@@ -5,8 +5,8 @@
         "path": ""
     },
     "sentry": {
-        "dsn": "https://c8f93631be824a14b9f114f53e3a2bfc@sentry.lumigame.com/3",
-        "environment": "LOCAL_1"
+        "dsn": "https://4ef01241a7d84d2e81a5c59e2d472d5e@sentry.lumigame.com/35",
+        "environment": "DEV"
     },
-    "offeredGames": [2, 22, 3, 1, 4, 7]
+    "offeredGames": [36]
 }

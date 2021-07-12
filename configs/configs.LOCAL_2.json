@@ -1,0 +1,13 @@
+{
+    "proxy": {
+        "ssl": true,
+        "uri": "l1-proxy2.lumigame.com",
+        "path": ""
+    },
+    "sentry": {
+        "dsn": "https://4ef01241a7d84d2e81a5c59e2d472d5e@sentry.lumigame.com/35",
+        "environment": "LOCAL_2"
+    },
+    "offeredGames": [2, 22, 3, 1, 4, 7],
+    "enableSourceMap": true
+}

@@ -20,6 +20,8 @@ function Home() {
             if (userSession && userSession.isAuthenticated) {
                 setSession(userSession);
                 setLoading(false);
+
+                window.history.pushState(null, "", location.href.split("?")[0]);
             } else {
                 router.push("timeout");
             }

@@ -3,6 +3,7 @@ import React from "react";
 import { AuthorizeResponse, ReCheckInResponse, SSOResponse } from "sc-user-service-client/dist/auth";
 
 import { authorize, clearSession, reCheckIn } from "../../services";
+import GameList from "../game-list";
 import Header from "../header";
 import Register from "../register";
 import Styles from "./dashboard.module.scss";
@@ -78,6 +79,7 @@ class Dashboard extends React.PureComponent<Props, State> {
             return authorizeInfo.authorized ? (
                 <div className={Styles["dashboard"]}>
                     <Header user={authorizeInfo.user} />
+                    <GameList />
                 </div>
             ) : (
                 <Register session={this.props.session} handleStateLogin={this.updateAuthorizeInfo} />
