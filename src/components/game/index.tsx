@@ -2,6 +2,7 @@ import React from "react";
 import { io, Socket } from "socket.io-client";
 
 import appSettings from "../../common/app-settings";
+import DrawResult from "./draw-result";
 import Styles from "./game.module.scss";
 import GameHeader from "./header";
 import MessageTransmitter from "./message-transmitter";
@@ -11,6 +12,10 @@ import { GameState, Props, State } from "./type";
 class Game extends React.PureComponent<Props, State> {
     private readonly defaultGameConfig = { odds: {}, minbet: 0, maxbet: 0, choices_maxbet: {} };
     private readonly messageTransmitter: MessageTransmitterType;
+    private readonly defaultResult = {
+        home: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        away: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    };
 
     private socket: Socket;
     private interval: NodeJS.Timeout;
@@ -27,6 +32,9 @@ class Game extends React.PureComponent<Props, State> {
             remainingTime: 0,
             gameConfigs: this.defaultGameConfig,
             ownBets: {},
+            halfTimeResult: this.defaultResult,
+            fullTimeResult: this.defaultResult,
+            activeHalfTimeResult: false,
         };
 
         this.messageTransmitter = new MessageTransmitter();
@@ -42,11 +50,19 @@ class Game extends React.PureComponent<Props, State> {
     }
 
     render() {
+        const { gameState, roundId, halfTimeResult, fullTimeResult, remainingTime, activeHalfTimeResult } = this.state;
         return (
             <div className={Styles["game-container"]}>
-                <GameHeader roundId={this.state.roundId} remainingTime={60} />
+                <GameHeader roundId={roundId} remainingTime={remainingTime} gameState={gameState} gameDurations={this.props.durations} />
                 <div className={Styles.game}>
-                    <div className={Styles["top-panel"]}></div>
+                    <div className={Styles["top-panel"]}>
+                        <DrawResult
+                            gameState={gameState}
+                            halfTimeResult={halfTimeResult}
+                            fullTimeResult={fullTimeResult}
+                            isHalfTimeActive={activeHalfTimeResult}
+                        />
+                    </div>
                     <div className={Styles["bottom-panel"]}></div>
                 </div>
             </div>
@@ -56,12 +72,11 @@ class Game extends React.PureComponent<Props, State> {
     initSocket() {
         const { gameName, session } = this.props;
         const { proxy } = appSettings;
-        const socketUri = `${proxy.ssl ? "https" : "http"}://${proxy.uri}/kenosoccer/user/${gameName.toLowerCase()}`;
-        console.log(socketUri);
+        const socketUri = `${proxy.ssl ? "https" : "http"}://${proxy.uri}/user/${gameName.toLowerCase()}`;
         this.socket = io(socketUri, {
             transports: ["websocket"],
             upgrade: false,
-            path: `${proxy.path}/socket.io`,
+            path: `${proxy.path}/kenosoccer/socket.io`,
         });
 
         this.socket.on("connect", () => {
@@ -84,6 +99,7 @@ class Game extends React.PureComponent<Props, State> {
         this.messageTransmitter.register("remainingTime", this.handleRemainingTime.bind(this));
         this.messageTransmitter.register("gameConfigs", this.handleGameConfigs.bind(this));
         this.messageTransmitter.register("roundHistory", this.handleRoundHistory.bind(this));
+        this.messageTransmitter.register("finishHalfTime", this.handleFinishHalfTime.bind(this));
         this.messageTransmitter.register("finish", this.handleFinish.bind(this));
         //this.messageTransmitter.register("status", this.handleStatus.bind(this));
         //this.messageTransmitter.register("user", this.handleUserData.bind(this));
@@ -117,6 +133,17 @@ class Game extends React.PureComponent<Props, State> {
     }
 
     handleGamePlay(remainingTime: number) {
+        const { durations } = this.props;
+        const activeHalfTimeResult = remainingTime <= durations.resetResult && remainingTime >= 0;
+
+        if (this.state.activeHalfTimeResult !== activeHalfTimeResult) {
+            this.setState({ activeHalfTimeResult });
+        }
+
+        if (remainingTime === durations.resetResult) {
+            this.setState({ halfTimeResult: this.defaultResult, fullTimeResult: this.defaultResult });
+        }
+
         const newGameState = this.determineGameState(remainingTime);
 
         if (this.state.gameState !== newGameState) {
@@ -139,15 +166,16 @@ class Game extends React.PureComponent<Props, State> {
                 return GameState.ShowFullTimeSettlementResult;
             case remainingTime <= durations.halfTimePlacingBets && remainingTime > durations.halfTimeLockingBet:
                 return GameState.HalfTime;
+            case remainingTime <= durations.halfTimeLockingBet && remainingTime >= durations.finishHalfTime:
+                return GameState.HalfTimeLockingBet;
             case remainingTime <= durations.finishHalfTime && remainingTime > durations.halfTimeLockingBet:
                 return GameState.ShowHalfTimeResult;
             case remainingTime <= durations.showHalfTimeSettlementResult && remainingTime > durations.halfTimePlacingBets:
                 return GameState.ShowHalfTimeSettlementResult;
             case remainingTime <= durations.fullTimePlacingBets && remainingTime > durations.fullTimeLockingBet:
                 return GameState.FullTime;
-            case (remainingTime <= durations.halfTimeLockingBet && remainingTime >= durations.finishHalfTime) ||
-                (remainingTime <= durations.fullTimeLockingBet && remainingTime >= 0):
-                return GameState.LockingBet;
+            case remainingTime <= durations.fullTimeLockingBet && remainingTime >= 0:
+                return GameState.FullTimeLockingBet;
             default:
                 return GameState.None;
         }
@@ -160,8 +188,7 @@ class Game extends React.PureComponent<Props, State> {
                 state: {
                     roundId: this.state.roundId + 1,
                     ownBets: {},
-                    halfTimeResult: {},
-                    fullTimeResult: {},
+
                     settlementResult: {},
                 },
             },
@@ -192,6 +219,13 @@ class Game extends React.PureComponent<Props, State> {
         });
     }
 
+    handleFinishHalfTime({ finishHalfTime }) {
+        this.setState({
+            halfTimeResult: finishHalfTime.result,
+            settlementResult: finishHalfTime.settlementResult,
+        });
+    }
+
     handleFinish({ finish }) {
         const { roundHistory } = this.state;
         const { durations } = this.props;
@@ -201,7 +235,7 @@ class Game extends React.PureComponent<Props, State> {
         roundHistoryClone.length > 100 && roundHistoryClone.pop();
 
         this.setState({
-            result: finish.result,
+            fullTimeResult: finish.result,
             settlementResult: finish.settlementResult,
             roundHistory: roundHistoryClone,
         });

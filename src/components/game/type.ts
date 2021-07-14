@@ -8,10 +8,11 @@ export enum GameState {
     ShowFullTimeResult,
     ShowFullTimeSettlementResult,
     HalfTime,
+    HalfTimeLockingBet,
     ShowHalfTimeResult,
     ShowHalfTimeSettlementResult,
     FullTime,
-    LockingBet,
+    FullTimeLockingBet,
 }
 
 export interface GameConfigs {
@@ -51,13 +52,14 @@ export interface Round {
 
 export interface GameDurations {
     wholeRound: number;
+    showFullTimeSettlementResult: number;
     halfTimePlacingBets: number;
+    resetResult: number;
     halfTimeLockingBet: number;
     finishHalfTime: number;
     showHalfTimeSettlementResult: number;
     fullTimePlacingBets: number;
     fullTimeLockingBet: number;
-    showFullTimeSettlementResult: number;
 }
 
 export type GameSetting = {
@@ -80,6 +82,8 @@ export type State = {
     roundId: number;
     roundHistory: Round[];
     ownBets: object;
-    result?: Result;
+    halfTimeResult?: Result;
+    fullTimeResult?: Result;
     settlementResult?: SettlementResult;
+    activeHalfTimeResult: boolean;
 };

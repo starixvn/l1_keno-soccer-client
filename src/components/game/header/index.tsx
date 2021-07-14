@@ -1,17 +1,44 @@
 import React, { useEffect, useState } from "react";
 
+import { GameDurations, GameState } from "../type";
 import Styles from "./header.module.scss";
 
 type Props = {
     roundId: number;
     remainingTime: number;
+    gameState: GameState;
+    gameDurations: GameDurations;
 };
 
 export default function GameHeader(props: Props) {
+    const [remainingTime, setRemainingTime] = useState<number>(0);
+
+    const { gameDurations } = props;
+
+    useEffect(() => {
+        switch (props.gameState) {
+            case GameState.None:
+            case GameState.Disabled:
+            case GameState.ShowFullTimeResult:
+            case GameState.ShowFullTimeSettlementResult:
+            case GameState.ShowHalfTimeResult:
+            case GameState.ShowHalfTimeSettlementResult:
+                setRemainingTime(0);
+                break;
+            case GameState.HalfTime:
+            case GameState.HalfTimeLockingBet:
+                setRemainingTime(props.remainingTime - gameDurations.finishHalfTime);
+                break;
+            default:
+                setRemainingTime(props.remainingTime);
+                break;
+        }
+    }, [props.gameState]);
+
     return (
         <div className={Styles.header}>
             <div className={Styles["header-content"]}>
-                <HeaderCounter remainingTime={props.remainingTime} />
+                <HeaderCounter key={props.gameState} remainingTime={remainingTime} />
                 <HeaderTitle roundId={props.roundId} />
             </div>
             <RebetButton />
@@ -44,7 +71,7 @@ function HeaderCounter({ remainingTime }) {
     return (
         <div className={Styles["header-counter-container"]}>
             <div className={Styles["header-counter"]}>
-                <div className={Styles.timer}>00:{counter}</div>
+                <div className={Styles.timer}>00:{counter.toLocaleString("en-US", { minimumIntegerDigits: 2, useGrouping: false })}</div>
             </div>
         </div>
     );

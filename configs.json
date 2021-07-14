@@ -8,5 +8,5 @@
         "dsn": "https://4ef01241a7d84d2e81a5c59e2d472d5e@sentry.lumigame.com/35",
         "environment": "DEV"
     },
-    "offeredGames": [36]
+    "offeredGames": [36, 37, 38]
 }

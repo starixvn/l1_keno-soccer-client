@@ -4,13 +4,44 @@
         "gameName": "MyDinh",
         "durations": {
             "wholeRound": 60,
-            "halfTimePlacingBets": 42,
+            "showFullTimeSettlementResult": 56,
+            "halfTimePlacingBets": 52,
+            "resetResult": 33,
             "halfTimeLockingBet": 30,
             "finishHalfTime": 25,
             "showHalfTimeSettlementResult": 22,
             "fullTimePlacingBets": 18,
-            "fullTimeLockingBet": 5,
-            "showFullTimeSettlementResult": 2
+            "fullTimeLockingBet": 5
+        }
+    },
+    "37": {
+        "id": 37,
+        "gameName": "HangDay",
+        "durations": {
+            "wholeRound": 60,
+            "showFullTimeSettlementResult": 56,
+            "resetResult": 33,
+            "halfTimePlacingBets": 52,
+            "halfTimeLockingBet": 30,
+            "finishHalfTime": 25,
+            "showHalfTimeSettlementResult": 22,
+            "fullTimePlacingBets": 18,
+            "fullTimeLockingBet": 5
+        }
+    },
+    "38": {
+        "id": 38,
+        "gameName": "ThongNhat",
+        "durations": {
+            "wholeRound": 60,
+            "showFullTimeSettlementResult": 56,
+            "halfTimePlacingBets": 52,
+            "resetResult": 33,
+            "halfTimeLockingBet": 30,
+            "finishHalfTime": 25,
+            "showHalfTimeSettlementResult": 22,
+            "fullTimePlacingBets": 18,
+            "fullTimeLockingBet": 5
         }
     }
 }

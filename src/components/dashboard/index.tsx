@@ -79,7 +79,7 @@ class Dashboard extends React.PureComponent<Props, State> {
             return authorizeInfo.authorized ? (
                 <div className={Styles["dashboard"]}>
                     <Header user={authorizeInfo.user} />
-                    <GameList />
+                    <GameList session={this.props.session} />
                 </div>
             ) : (
                 <Register session={this.props.session} handleStateLogin={this.updateAuthorizeInfo} />

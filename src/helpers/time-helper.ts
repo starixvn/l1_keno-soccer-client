@@ -23,7 +23,6 @@ export const formatDate = (date, template) => {
             return date.getFullYear().toString().slice(-v.length);
         });
     } catch (ex) {
-        console.log(ex);
         return date.toString();
     }
 };
